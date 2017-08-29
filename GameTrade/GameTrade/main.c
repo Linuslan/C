@@ -43,7 +43,8 @@ int main() {
 	init();
 	showProps();
 	showPlayers();
-	trade(&(players[3]), 2);
+	Player* player = &(players[3]);
+	trade(player, 2);
 	printf("***************************交易后*****************************\n");
     showProps();
 	showPlayers();
@@ -101,7 +102,8 @@ void trade(Player* player, int propId) {
     for(; i < propCount; i ++) {
         Prop prop = *(props + i);
         if(prop.id == propId) {
-            tradeProp = &prop;
+            tradeProp = props + i;  //必须要这么写，tradeProp里面存的应该是props数组里面第i个元素的地址，而不是prop的地址
+            break;
         }
     }
     if(tradeProp->stock <=0) {
