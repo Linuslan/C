@@ -4,7 +4,6 @@
 
 int main()
 {
-    printf("Hello world!\n");
-    printf("hahaha");
+    showMap();
     return 0;
 }

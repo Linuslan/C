@@ -1,16 +1,22 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <windows.h>
+
+typedef enum PropType{
+    WEAPON, ARMOR, CARD
+} PropType;
+
 /* 道具结构 */
 typedef struct Prop{
     int id;
     char name[50];
-    int type;   //道具类型
-    union minProperty {
+    PropType propType;   //道具类型
+    int level;
+    union {
         int minAttack;
         int minDefence;
     };
-    union maxProperty {
+    union {
         int maxAttack;
         int maxDefence;
     };
@@ -39,16 +45,19 @@ typedef struct Player{
     int id;
     char name[50];
     char password[50];
-    Prop weapon;
-    Prop armor;
-    int life;   //初始生命值
-    int force;  //初始内力值 即蓝
+    int level;
+    int maxExp;    //升级所需经验值
+    int exp;    //当前经验值
+    int maxHp;   //最大生命值，即初始生命值
+    int maxMp;  //最大内力值，即初始内力值 即蓝
     int hp; //当前生命值
     int mp; //当前蓝
     int minAttack;
     int maxAttack;
     int minDefence;
     int maxDefence;
+    Prop weapon;
+    Prop armor;
     Martial martial;    //归属门派
     COORD coord;    //玩家当前所在坐标
     Bag bag;
@@ -62,3 +71,7 @@ typedef struct Map {
     COORD coord;    //地图所在坐标
     char desc[1000];    //地图描述
 } Map;
+
+void showMap();
+
+void showWelcome();
