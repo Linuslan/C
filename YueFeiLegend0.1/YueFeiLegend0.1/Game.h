@@ -72,6 +72,20 @@ typedef struct Map {
     char desc[1000];    //µÿÕº√Ë ˆ
 } Map;
 
-void showMap();
+void Init();
 
-void showWelcome();
+void RefreshMap(int x, int y);
+
+void Move(int x, int y);
+
+void ShowWelcome();
+
+void RefreshInfo();
+
+void InitMenu();
+
+void GetMapSize(int* x, int* y);
+
+void ProcessMenu(char key);
+
+void ShowPlayer();
