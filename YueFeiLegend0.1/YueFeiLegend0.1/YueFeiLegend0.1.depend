@@ -9,18 +9,20 @@
 	<stdlib.h>
 	<windows.h>
 
-1504363625 source:e:\study\coderepository\c\yuefeilegend0.1\yuefeilegend0.1\main.c
+1504422029 source:e:\study\coderepository\c\yuefeilegend0.1\yuefeilegend0.1\main.c
 	<stdio.h>
 	<stdlib.h>
 	"Game.h"
 	"GameLib.h"
 
-1504365016 e:\study\coderepository\c\yuefeilegend0.1\yuefeilegend0.1\game.h
+1504450388 e:\study\coderepository\c\yuefeilegend0.1\yuefeilegend0.1\game.h
 	<stdio.h>
 	<stdlib.h>
 	<windows.h>
 
-1504365959 source:e:\study\coderepository\c\yuefeilegend0.1\yuefeilegend0.1\game.c
+1504449777 source:e:\study\coderepository\c\yuefeilegend0.1\yuefeilegend0.1\game.c
+	<time.h>
+	<ctype.h>
 	"Game.h"
 	"GameLib.h"
 

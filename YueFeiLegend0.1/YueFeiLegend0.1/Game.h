@@ -61,6 +61,7 @@ typedef struct Player{
     Martial martial;    //归属门派
     COORD coord;    //玩家当前所在坐标
     Bag bag;
+    int money;
 } Player;
 
 /* 地图结构 */
@@ -71,6 +72,22 @@ typedef struct Map {
     COORD coord;    //地图所在坐标
     char desc[1000];    //地图描述
 } Map;
+
+typedef struct Monster {
+    int id;
+    char name[50];
+    char desc[1000];
+    COORD coord;
+    int state;
+    int level;  //等级
+    int hp; //血量
+    int minExp; //最小经验值
+    int maxExp; //最大经验值
+    int minAttack;  //最小攻击力
+    int maxAttack;  //最大攻击力
+    int minMoney;   //最小金钱
+    int maxMoney;   //最大金钱
+} Monster;
 
 void Init();
 
@@ -89,3 +106,13 @@ void GetMapSize(int* x, int* y);
 void ProcessMenu(char key);
 
 void ShowPlayer();
+
+void WatchAround(int x, int y);
+
+Monster* CreateMonster(const Monster* monster);
+
+int RefreshMonster(Monster* monsterArr, int* monsterCount, int row);
+
+void Fight(Player* player, Monster* monster, int row);
+
+int RefreshProp(Props* propArr, int* propCount, int row);

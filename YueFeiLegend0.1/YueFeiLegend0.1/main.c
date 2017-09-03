@@ -2,10 +2,9 @@
 #include <stdlib.h>
 #include "Game.h"
 #include "GameLib.h"
-
+int x = 0;
+int y = 0;
 int main() {
-    int x = 0;
-    int y = 0;
     int max_x = 0;
     int max_y = 0;
     char key = 0;
