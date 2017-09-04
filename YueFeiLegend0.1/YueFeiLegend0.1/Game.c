@@ -2,10 +2,7 @@
 #include <ctype.h>
 #include "Game.h"
 #include "GameLib.h"
-#define MARGIN_X 33
-#define OFFSET_X 97
-#define SEP "--------------------------------------------------------------------------------------------------"
-#define CLEAR_SPACE "                                                                                          "
+#include "Constant.h"
 int welcom_start_row = 0;
 int map_start_row = 0;
 int init_menu_start_row = 0;
@@ -127,6 +124,36 @@ Monster monsters[] = {
     }
 };
 
+void SavePlayers() {
+    FILE* playerFile = NULL;
+    char* playerFileName = "player.data";
+    playerFile = fopen(playerFileName, "wb");
+    if(!playerFile) {
+        printf("创建玩家数据异常");
+        return;
+    }
+    int size = sizeof(players) / sizeof(Player);
+    for(int i = 0; i < size; i ++) {
+        Player player = players[i];
+        fwrite(&player, sizeof(Player), 1, playerFile);
+    }
+}
+
+void ReadPlayer() {
+    FILE* playerFile = NULL;
+    char* playerFileName = "player.data";
+    playerFile = fopen(playerFileName, "rb");
+    if(!playerFile) {
+        printf("初始化玩家数据异常");
+        return;
+    }
+    Player* player = (Player*)malloc(sizeof(Player));
+    printf("开始读数据\n");
+    while(fread(player, sizeof(Player), 1, playerFile) > 0) {
+
+    }
+}
+
 void Init() {
     map_start_row = 3;
     init_info_start_row = map_start_row + sizeof(maps) / sizeof(maps[0]) + 1;
@@ -238,12 +265,17 @@ void ShowPlayer() {
     if(loginPlayer->bag.count <= 0) {
         printf("当前背包空空如也，快意江湖岂能毫无准备");
     } else {
+        int count = 0;
         for(int i = 0; i < loginPlayer->bag.count; i ++) {
+            if(count >= loginPlayer->bag.count) {
+                break;
+            }
             Prop prop = loginPlayer->bag.props[i];
             if(i%4 == 0) {
                 SetPosition(MARGIN_X+7, info_start_row++);
             }
             printf("%d、%s(%d)\t", i+1, prop.name, prop.stock);
+            count += prop.stock;
         }
     }
 }
@@ -360,7 +392,7 @@ int RefreshMonster(Monster* monsterArr, int* monsterCount, int info_start_row) {
         if(i != 0 && i % 4 == 0) {
             SetPosition(MARGIN_X+7, info_start_row++);
         }
-        printf("%d、%s(%d级)%d\t", i + 1, monster->name, monster->level, monster->state);
+        printf("%d、%s(%d级)\t", i + 1, monster->name, monster->level);
     }
     return info_start_row;
 }

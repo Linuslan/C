@@ -31,14 +31,23 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="Constant.h" />
 		<Unit filename="Game.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="Game.h" />
+		<Unit filename="GameFrame.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="GameFrame.h" />
 		<Unit filename="GameLib.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="GameLib.h" />
+		<Unit filename="Login.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="Login.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>

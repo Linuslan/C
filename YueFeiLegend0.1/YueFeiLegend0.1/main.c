@@ -2,10 +2,11 @@
 #include <stdlib.h>
 #include "Game.h"
 #include "GameLib.h"
+#include "GameFrame.h"
 int x = 0;
 int y = 0;
 int main() {
-    int max_x = 0;
+    /*int max_x = 0;
     int max_y = 0;
     char key = 0;
     Init();
@@ -48,6 +49,10 @@ int main() {
             }
             RefreshMap(x, y);
         }
-    }
+    }*/
+    //SavePlayers();
+    //ReadPlayer();
+    ShowWelcome2();
+    ShowMenu();
     return 0;
 }

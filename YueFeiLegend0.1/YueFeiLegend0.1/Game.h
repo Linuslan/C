@@ -120,3 +120,7 @@ void ShowStoreProps();
 
 /* ¹ºÂòµÀ¾ß */
 void StoreTrade(Player* player, Prop* prop, int offset, int row);
+
+void SavePlayers();
+
+void ReadPlayer();
