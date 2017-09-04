@@ -1,10 +1,11 @@
 # depslib dependency file v1.0
-1504145087 source:g:\linuslan\coderepository\c\yuefeilegend0.1\yuefeilegend0.1\main.c
+1504485764 source:g:\linuslan\coderepository\c\yuefeilegend0.1\yuefeilegend0.1\main.c
 	<stdio.h>
 	<stdlib.h>
 	"Game.h"
+	"GameLib.h"
 
-1504156049 g:\linuslan\coderepository\c\yuefeilegend0.1\yuefeilegend0.1\game.h
+1504489353 g:\linuslan\coderepository\c\yuefeilegend0.1\yuefeilegend0.1\game.h
 	<stdio.h>
 	<stdlib.h>
 	<windows.h>
@@ -33,5 +34,20 @@
 1504354958 source:e:\study\coderepository\c\yuefeilegend0.1\yuefeilegend0.1\gamelib.c
 	<stdio.h>
 	<stdlib.h>
+	"GameLib.h"
+
+1504485764 source:g:\linuslan\coderepository\c\yuefeilegend0.1\yuefeilegend0.1\gamelib.c
+	<stdio.h>
+	<stdlib.h>
+	"GameLib.h"
+
+1504485764 g:\linuslan\coderepository\c\yuefeilegend0.1\yuefeilegend0.1\gamelib.h
+	<stdio.h>
+	<windows.h>
+
+1504505156 source:g:\linuslan\coderepository\c\yuefeilegend0.1\yuefeilegend0.1\game.c
+	<time.h>
+	<ctype.h>
+	"Game.h"
 	"GameLib.h"
 

@@ -115,4 +115,8 @@ int RefreshMonster(Monster* monsterArr, int* monsterCount, int row);
 
 void Fight(Player* player, Monster* monster, int row);
 
-int RefreshProp(Props* propArr, int* propCount, int row);
+/* 展示商店的商品 */
+void ShowStoreProps();
+
+/* 购买道具 */
+void StoreTrade(Player* player, Prop* prop, int offset, int row);

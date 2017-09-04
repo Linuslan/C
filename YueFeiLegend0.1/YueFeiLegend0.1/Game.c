@@ -5,7 +5,7 @@
 #define MARGIN_X 33
 #define OFFSET_X 97
 #define SEP "--------------------------------------------------------------------------------------------------"
-#define CLEAR_SPACE "                                                                                            "
+#define CLEAR_SPACE "                                                                                          "
 int welcom_start_row = 0;
 int map_start_row = 0;
 int init_menu_start_row = 0;
@@ -16,7 +16,7 @@ extern int y;
 
 /* 初始化玩家信息 */
 Player players[] = {
-    {1, "赵飞云", "123456", .money=100, .level=1, .maxExp=20, .exp=0, .maxHp=100, .hp=100, .maxMp=50, .mp=50, .minAttack=5, .maxAttack=10, .minDefence=5, .maxDefence=10,
+    {1, "赵飞云", "123456", .money=50000, .level=1, .maxExp=20, .exp=0, .maxHp=100, .hp=100, .maxMp=50, .mp=50, .minAttack=5, .maxAttack=10, .minDefence=5, .maxDefence=10,
      .weapon={1, "生锈的铁剑", WEAPON, 1, .minAttack=5, .maxAttack=10, .price=100, .desc="新手专用"},
      .armor={2, "破旧的护甲", ARMOR, 2, .minDefence=5, .maxDefence=10, .price=500, .desc="新手专供"},
      .martial={3, "岳家军"}, .coord={0, 0},
@@ -24,7 +24,7 @@ Player players[] = {
          .count=1, .max=9,
         .props={
             {
-            3, "木枪", WEAPON, .level=5, .minAttack=10, .maxAttack=15, .price=500, .stock=5, .desc="适合初入江湖的少侠"
+            3, "木枪", WEAPON, .level=5, .minAttack=10, .maxAttack=15, .price=500, .stock=1, .desc="适合初入江湖的少侠"
             }
         }
      }},
@@ -214,16 +214,19 @@ void ProcessMenu(char key) {
         ShowPlayer();
     } else if(key == '2') {
         WatchAround(x, y);
+    } else if(key == '4') {
+        ShowStoreProps();
     }
 }
 
 void ShowPlayer() {
     int info_start_row = init_info_start_row;
     RefreshInfo();
-    SetPosition(MARGIN_X+35, info_start_row++);
+    SetPosition(MARGIN_X+45, info_start_row++);
     printf("大侠资料");
     SetPosition(MARGIN_X+7, info_start_row++);
-    printf("姓名：%-10s级别：%d(%d/%d)\tHP：%d/%d\tMP：%d/%d", loginPlayer->name, loginPlayer->level, loginPlayer->exp, loginPlayer->maxExp, loginPlayer->hp, loginPlayer->maxHp, loginPlayer->mp, loginPlayer->maxMp);
+    printf("姓名：%-10s级别：%d(%d/%d)\tHP：%d/%d\tMP：%d/%d\t金钱：%-10d", loginPlayer->name, loginPlayer->level, loginPlayer->exp,
+            loginPlayer->maxExp, loginPlayer->hp, loginPlayer->maxHp, loginPlayer->mp, loginPlayer->maxMp, loginPlayer->money);
     SetPosition(MARGIN_X+7, info_start_row++);
     printf("门派：%-10s武器：%s(最小攻击力%d，最大攻击力%d)", loginPlayer->martial.name,
             loginPlayer->weapon.name, loginPlayer->weapon.minAttack, loginPlayer->weapon.maxAttack);
@@ -235,10 +238,9 @@ void ShowPlayer() {
     if(loginPlayer->bag.count <= 0) {
         printf("当前背包空空如也，快意江湖岂能毫无准备");
     } else {
-        Prop* props = loginPlayer->bag.props;
         for(int i = 0; i < loginPlayer->bag.count; i ++) {
-            Prop prop = props[i];
-            if(i%3 == 0) {
+            Prop prop = loginPlayer->bag.props[i];
+            if(i%4 == 0) {
                 SetPosition(MARGIN_X+7, info_start_row++);
             }
             printf("%d、%s(%d)\t", i+1, prop.name, prop.stock);
@@ -428,5 +430,113 @@ void Fight(Player* player, Monster* monster, int row) {
                player->mp, monster->name, monsterAttack, monster->hp);
         Sleep(500);
     }
+}
+
+int RefreshProps(int offset) {
+
+    RefreshInfo();
+    int infoStartRow = init_info_start_row;
+    SetPosition(MARGIN_X+45, infoStartRow++);
+    printf("走过路过，不要错过");
+    Prop prop;
+    int size = sizeof(props) / sizeof(Prop);
+    for(int i = 0; i < size; i ++) {
+        prop = props[i];
+        if(i % 4 == 0) {
+            SetPosition(offset, infoStartRow++);
+        }
+        printf("%d、%s(%d级，库存:%d)\t", i + 1, prop.name, prop.level, prop.stock);
+    }
+    return infoStartRow;
+}
+
+/* 展示商店的商品 */
+void ShowStoreProps() {
+    int offset = MARGIN_X+7;
+    int size = sizeof(props) / sizeof(Prop);
+    int infoStartRow = RefreshProps(offset);
+    int targetId = 0;
+    while(1) {
+        SetPosition(offset, infoStartRow);
+        printf(CLEAR_SPACE);
+        SetPosition(offset, infoStartRow);
+        printf("请选择物品编号(0退出):");
+        scanf("%d", &targetId);
+        if(targetId == 0) {
+            RefreshInfo();
+            break;
+        } else {
+            targetId--;
+            if(targetId < 0 || targetId >= size) {
+                SetPosition(offset, infoStartRow);
+                printf(CLEAR_SPACE);
+                SetPosition(offset, infoStartRow);
+                printf("输入无效");
+                getch();
+                fflush(stdin);
+                continue;
+            }
+            Prop* pProp = &props[targetId];
+            StoreTrade(loginPlayer, pProp, offset, infoStartRow);
+            infoStartRow = RefreshProps(offset);
+        }
+    }
+}
+
+/* 购买道具 */
+void StoreTrade(Player* player, Prop* prop, int offset, int row) {
+    if(prop->stock <= 0) {
+        SetPosition(offset, row);
+        printf(CLEAR_SPACE);
+        SetPosition(offset, row);
+        printf("商品库存不足");
+        getch();
+        fflush(stdin);
+        return;
+    }
+    if(player->bag.count >= player->bag.max) {
+        SetPosition(offset, row);
+        printf(CLEAR_SPACE);
+        SetPosition(offset, row);
+        printf("您的背包空间不足");
+        getch();
+        fflush(stdin);
+        return;
+    }
+    if(player->money < prop->price) {
+        SetPosition(offset, row);
+        printf(CLEAR_SPACE);
+        SetPosition(offset, row);
+        printf("您的金钱不足");
+        getch();
+        fflush(stdin);
+        return;
+    }
+    Prop* bought;
+    int i = 0;
+    for(; i < player->bag.count; i ++) {
+        bought = &player->bag.props[i];
+        if(bought->id == prop->id) {
+            bought->stock++;
+            break;
+        }
+    }
+    if(i == player->bag.count) {
+        Prop* newProp = &player->bag.props[i];
+        newProp->id = prop->id;
+        strcpy(newProp->desc, prop->desc);
+        newProp->level = prop->level;
+        newProp->maxAttack = prop->maxAttack;
+        newProp->maxDefence = prop->maxDefence;
+        newProp->minAttack = prop->minAttack;
+        newProp->minDefence = prop->minDefence;
+        strcpy(newProp->name, prop->name);
+        newProp->price = prop->price;
+        newProp->propType = prop->propType;
+        newProp->stock = 1;
+    }
+    player->bag.count ++;
+    player->money -= prop->price;
+    prop->stock --;
 }
 
