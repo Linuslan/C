@@ -37,11 +37,17 @@ int ShowMenu() {
     printf(SEP);
     return menuStartRow;
 }
-
+Map menuMap[] = {
+    {.id=1, .name="µÇÂ¼", .coord={0, 0}},
+    {.id=2, .name="×¢²á", .coord={0, 1}
+};
 void InitLoginMenu() {
     Clear(++menuStartRow, 2);
     SetPosition(MARGIN_X+MIDDLE_OFFSET_X, menuStartRow);
     printf("ÇëÑ¡Ôñ");
     SetPosition(MARGIN_X+ROW_OFFSET_X, ++menuStartRow);
-    printf("1¡¢µÇÂ¼\t");
+    int size = sizeof(menuMap)/sizeof(Map);
+    for(int i = 0; i < size; i ++) {
+
+    }
 }
