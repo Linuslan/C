@@ -1,5 +1,5 @@
 #include "GameFrame.h"
-
+int menuStartRow = 2;
 void Clear(int row, int count) {
     int originalRow = row;
     for(int i = 0; i < count; i ++) {
@@ -15,7 +15,7 @@ int ShowWelcome2() {
     printf(SEP);
     SetPosition(MARGIN_X, ++welcom_start_row);
     printf("|");
-    SetPosition(MARGIN_X+45, welcom_start_row);
+    SetPosition(MARGIN_X+MIDDLE_OFFSET_X, welcom_start_row);
     printf("欢迎来到岳飞的世界");
     SetPosition(MARGIN_X+OFFSET_X, welcom_start_row);
     printf("|");
@@ -25,7 +25,6 @@ int ShowWelcome2() {
 }
 
 int ShowMenu() {
-    int menuStartRow = 2;
     SetPosition(MARGIN_X, ++menuStartRow);
     printf("|");
     SetPosition(MARGIN_X + OFFSET_X, menuStartRow);
@@ -39,6 +38,10 @@ int ShowMenu() {
     return menuStartRow;
 }
 
-void InitMenu() {
-
+void InitLoginMenu() {
+    Clear(++menuStartRow, 2);
+    SetPosition(MARGIN_X+MIDDLE_OFFSET_X, menuStartRow);
+    printf("请选择");
+    SetPosition(MARGIN_X+ROW_OFFSET_X, ++menuStartRow);
+    printf("1、登录\t");
 }
