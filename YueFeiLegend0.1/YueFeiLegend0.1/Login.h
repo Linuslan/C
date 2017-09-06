@@ -3,7 +3,7 @@
 #include "Constant.h"
 #include "Game.h"
 void InitIndexMenu();
-void ShowIndexMenu();
+int ShowIndexMenu();
 int ProcessIndex();
 int ShowLogin();
 int ShowRegist();

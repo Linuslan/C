@@ -58,6 +58,9 @@ int main() {
     ShowMenu();
     InitMainFrame();
     InitIndexMenu();
-    ShowIndexMenu();
+    int login = ShowIndexMenu();
+    if(login > 0) {
+
+    }
     return 0;
 }

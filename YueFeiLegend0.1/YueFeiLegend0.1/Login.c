@@ -26,7 +26,7 @@ void InitIndexMenu() {
         printf("     ");
     }
 }
-void ShowIndexMenu() {
+int ShowIndexMenu() {
     char key = 0;
     int isSuccess = 0;
     while(1) {
@@ -54,13 +54,19 @@ void ShowIndexMenu() {
             InitIndexMenu();
         }
     }
+    return isSuccess;
 }
 
 int ProcessIndex() {
     if(login_x == 0) {  //ÏÔÊ¾µÇÂ½
         return ShowLogin();
     } else {
-        return ShowRegist();   //ÏÔÊ¾×¢²á
+        int i = ShowRegist();   //ÏÔÊ¾×¢²á
+        if(i > 0) {
+            login_x = 0;
+            InitIndexMenu();
+            return ShowLogin();
+        }
     }
 }
 
