@@ -101,7 +101,7 @@ void Init();
 
 void RefreshMap(int x, int y);
 
-void Move(int x, int y);
+void Move();
 
 void RefreshInfo();
 

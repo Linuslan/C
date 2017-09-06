@@ -5,8 +5,6 @@ int init_menu_start_row = 0;
 int init_info_start_row = 0;
 int menu_x = 0;
 extern Player* loginPlayer;
-extern int x;
-extern int y;
 extern initMenuStartRow;
 extern initMainFrameRow;
 /* 初始化玩家信息 */
@@ -160,47 +158,72 @@ void Init() {
 }
 
 void RefreshMap(int x, int y) {
-    int map_y = map_start_row;
+    int map_y = initMainFrameRow;
     int i, j;
     int size = sizeof(maps) / sizeof(maps[0]);
     int size2 = sizeof(maps[0]) / sizeof(Map);
     for(i = 0; i < size; i ++) {
-        SetPosition(MARGIN_X, map_y);
-        printf("|");
+        SetPosition(MARGIN_X, ++map_y);
         SetPosition(MARGIN_X+15, map_y);
         for(j = 0; j < size2; j ++) {
             Map map = maps[i][j];
             if(x == j && y == i) {
-                SetColor(7, 4);
+                SetSelectedColor();
             }
             printf("%-9s", map.name);
-            SetColor(10, 0);
+            ResetColor();
         }
         SetPosition(MARGIN_X+OFFSET_X, map_y++);
-        printf("|");
     }
     SetPosition(MARGIN_X, map_y);
-    printf(SEP);
 }
 
-void RefreshInfo() {
-    int info_start_row = init_info_start_row;
-    for(int i = 0; i < 10; i ++) {
-        SetPosition(MARGIN_X, info_start_row);
-        printf("|");
-        for(int j = 0; j < OFFSET_X-1; j ++) {
-            printf(" ");
+void Move() {
+    int x = loginPlayer->coord.X;
+    int y = loginPlayer->coord.Y;
+    int max_y = sizeof(maps)/sizeof(maps[0]);
+    int max_x = sizeof(maps[0])/sizeof(Map);
+    char key = 0;
+    while(1) {
+        key = getch();
+        if(key == '0') {
+            break;
+        } else {
+            if(key == VK_UP || key == 72) {
+                y --;
+                if(y < 0) {
+                    y = max_y-1;
+                }
+            } else if(key == VK_RIGHT || key == 77) {
+                x ++;
+                if(x >= max_x) {
+                    x = 0;
+                }
+            } else if(key == VK_DOWN || key == 80) {
+                y ++;
+                if(y >= max_y) {
+                    y = 0;
+                }
+            } else if(key == VK_LEFT || key == 75) {
+                x --;
+                if(x < 0) {
+                    x = max_x-1;
+                }
+            } else if(key != -32) {
+                printf("输入错误");
+                continue;
+            }
+            loginPlayer->coord.X = x;
+            loginPlayer->coord.Y = y;
+            RefreshMap(loginPlayer->coord.X, loginPlayer->coord.Y);
         }
-        SetPosition(MARGIN_X+OFFSET_X, info_start_row++);
-        printf("|");
     }
-    SetPosition(MARGIN_X, info_start_row);
-    printf(SEP);
 }
 
-char menus[][50] = {"查看人物", "观察周围", "回门派", "购买装备"};
+char menus[][50] = {"查看地图", "查看人物", "观察周围", "回门派", "购买装备"};
 int size = sizeof(menus)/sizeof(menus[0]);
 void InitGameMenu() {
+    int info_start_row = initMainFrameRow;
     int menu_start_row = initMenuStartRow;
     Clear(++menu_start_row, 2, OFFSET_X-1);
     SetPosition(MARGIN_X+MIDDLE_OFFSET_X-3, menu_start_row);
@@ -214,6 +237,7 @@ void InitGameMenu() {
         ResetColor();
         printf("     ");
     }
+    Clear(++info_start_row, MAIN_FRAME_ROW, OFFSET_X-1);
 }
 
 void SelectGameMenu() {
@@ -253,31 +277,34 @@ void GetMapSize(int* x, int* y) {
 
 int ProcessGameMenu() {
     if(menu_x == 0) {    //执行玩家属性展示
-        ShowPlayer();
+        RefreshMap(loginPlayer->coord.X, loginPlayer->coord.Y);
+        Move();
     } else if(menu_x == 1) {
-        WatchAround(x, y);
+        ShowPlayer();
     } else if(menu_x == 2) {
+        WatchAround(loginPlayer->coord.X, loginPlayer->coord.Y);
+    } else if(menu_x == 3) {
         ShowStoreProps();
     }
     return 0;
 }
 
 void ShowPlayer() {
-    int info_start_row = init_info_start_row;
-    RefreshInfo();
-    SetPosition(MARGIN_X+45, info_start_row++);
+    int info_start_row = initMainFrameRow;
+    Clear(++info_start_row, MAIN_FRAME_ROW, OFFSET_X-1);
+    SetPosition(MARGIN_X+MIDDLE_OFFSET_X-3, info_start_row);
     printf("大侠资料");
-    SetPosition(MARGIN_X+7, info_start_row++);
+    SetPosition(MARGIN_X+ROW_OFFSET_X, ++info_start_row);
     printf("姓名：%-10s级别：%d(%d/%d)\tHP：%d/%d\tMP：%d/%d\t金钱：%-10d", loginPlayer->name, loginPlayer->level, loginPlayer->exp,
             loginPlayer->maxExp, loginPlayer->hp, loginPlayer->maxHp, loginPlayer->mp, loginPlayer->maxMp, loginPlayer->money);
-    SetPosition(MARGIN_X+7, info_start_row++);
+    SetPosition(MARGIN_X+ROW_OFFSET_X, ++info_start_row);
     printf("门派：%-10s武器：%s(最小攻击力%d，最大攻击力%d)", loginPlayer->martial.name,
             loginPlayer->weapon.name, loginPlayer->weapon.minAttack, loginPlayer->weapon.maxAttack);
-    SetPosition(MARGIN_X+7, info_start_row++);
+    SetPosition(MARGIN_X+ROW_OFFSET_X, ++info_start_row);
     printf("防具：%s(最小防御力%d，最大防御力%d)", loginPlayer->armor.name, loginPlayer->armor.minDefence, loginPlayer->armor.maxDefence);
-    SetPosition(MARGIN_X+7, info_start_row++);
-    printf("-------------------------------背包-------------------------------");
-    SetPosition(MARGIN_X+7, info_start_row++);
+    SetPosition(MARGIN_X+ROW_OFFSET_X, ++info_start_row);
+    printf("-------------------------------------背包-------------------------------------");
+    SetPosition(MARGIN_X+ROW_OFFSET_X, ++info_start_row);
     if(loginPlayer->bag.count <= 0) {
         printf("当前背包空空如也，快意江湖岂能毫无准备");
     } else {
@@ -288,7 +315,7 @@ void ShowPlayer() {
             }
             Prop prop = loginPlayer->bag.props[i];
             if(i%4 == 0) {
-                SetPosition(MARGIN_X+7, info_start_row++);
+                SetPosition(MARGIN_X+ROW_OFFSET_X, ++info_start_row);
             }
             printf("%d、%s(%d)\t", i+1, prop.name, prop.stock);
             count += prop.stock;
@@ -297,6 +324,7 @@ void ShowPlayer() {
 }
 
 void WatchAround(int x, int y) {
+    int info_start_row = initMainFrameRow;
     int len = 5;
     int targetIdx = 0;  //攻击的目标序号
     Monster* monsterArr = calloc(len, sizeof(Monster));
@@ -321,7 +349,6 @@ void WatchAround(int x, int y) {
             idx ++;
         }
     }
-    int info_start_row = init_info_start_row;
     int row = info_start_row;
     info_start_row = RefreshMonster(monsterArr, &idx, row);
     while(1) {
@@ -343,7 +370,7 @@ void WatchAround(int x, int y) {
         fflush(stdin);
         SetPosition(MARGIN_X+7, info_start_row);
         if(targetIdx == 0) {
-            RefreshInfo();
+            Clear(++info_start_row, MAIN_FRAME_ROW, OFFSET_X-1);
             break;
         }
         Monster* target = monsterArr + --targetIdx;
@@ -378,7 +405,7 @@ Monster* CreateMonster(const Monster* monster) {
 }
 
 int RefreshMonster(Monster* monsterArr, int* monsterCount, int info_start_row) {
-    RefreshInfo();
+    Clear(++info_start_row, MAIN_FRAME_ROW, OFFSET_X-1);
     SetPosition(MARGIN_X+35, info_start_row++);
     printf("大侠看了看四周");
     SetPosition(MARGIN_X+7, info_start_row++);
@@ -481,9 +508,9 @@ void Fight(Player* player, Monster* monster, int row) {
 }
 
 int RefreshProps(int offset) {
+    int infoStartRow = initMainFrameRow;
+    Clear(++infoStartRow, MAIN_FRAME_ROW, OFFSET_X-1);
 
-    RefreshInfo();
-    int infoStartRow = init_info_start_row;
     SetPosition(MARGIN_X+45, infoStartRow++);
     printf("走过路过，不要错过");
     Prop prop;
@@ -511,7 +538,8 @@ void ShowStoreProps() {
         printf("请选择物品编号(0退出):");
         scanf("%d", &targetId);
         if(targetId == 0) {
-            RefreshInfo();
+            int infoStartRow = initMainFrameRow;
+            Clear(++infoStartRow, MAIN_FRAME_ROW, OFFSET_X-1);
             break;
         } else {
             targetId--;
