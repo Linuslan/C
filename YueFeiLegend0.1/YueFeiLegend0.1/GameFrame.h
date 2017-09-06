@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include "Constant.h"
 #include "GameLib.h"
-#include "Game.h"
-int ShowWelcome2();
+int ShowWelcome();
 int ShowMenu();
 int InitMainFrame();

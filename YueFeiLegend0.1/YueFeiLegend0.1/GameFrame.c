@@ -12,7 +12,7 @@ void Clear(int row, int count, int column) {
     SetPosition(MARGIN_X, originalRow);
 }
 
-int ShowWelcome2() {
+int ShowWelcome() {
     int welcom_start_row = 0;
     SetPosition(MARGIN_X, welcom_start_row);
     printf(SEP);

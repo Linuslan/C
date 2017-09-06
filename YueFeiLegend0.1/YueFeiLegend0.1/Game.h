@@ -5,6 +5,7 @@
 #include <ctype.h>
 #include "GameLib.h"
 #include "Constant.h"
+#include "GameFrame.h"
 #ifndef GAME_H
 #define GAME_H
 typedef enum PropType{
@@ -102,15 +103,13 @@ void RefreshMap(int x, int y);
 
 void Move(int x, int y);
 
-void ShowWelcome();
-
 void RefreshInfo();
 
-void InitMenu();
+void InitGameMenu();
 
 void GetMapSize(int* x, int* y);
 
-void ProcessMenu(char key);
+int ProcessGameMenu();
 
 void ShowPlayer();
 

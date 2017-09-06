@@ -7,7 +7,7 @@ int login_y = 0;
 int loginMenuSize = 0;
 char* playerFile = "player.data";
 /* ÏÔÊ¾Ê×Ò³Ö÷²Ëµ¥ */
-void InitIndexMenu() {
+void InitLoginMenu() {
     int menuStartRow = initMenuStartRow;
     char loginMenu[][50]={{"µÇÂ½"}, {"×¢²á"}};
     Clear(++menuStartRow, 2, OFFSET_X-1);
@@ -19,20 +19,20 @@ void InitIndexMenu() {
         char menu[50];
         strcpy(menu, loginMenu[i]);
         if(login_x == i) {
-            SetColor(0, 7);
+            SetSelectedColor();
         }
         printf("%d¡¢%s", i+1, menu);
         ResetColor();
         printf("     ");
     }
 }
-int ShowIndexMenu() {
+int ShowLoginMenu() {
     char key = 0;
     int isSuccess = 0;
     while(1) {
         key = getch();
         if(key == 13) {
-            isSuccess = ProcessIndex();
+            isSuccess = ProcessLogin();
             if(isSuccess > 0) {
                 break;
             }
@@ -51,20 +51,20 @@ int ShowIndexMenu() {
                 printf("ÊäÈë´íÎó");
                 continue;
             }
-            InitIndexMenu();
+            InitLoginMenu();
         }
     }
     return isSuccess;
 }
 
-int ProcessIndex() {
+int ProcessLogin() {
     if(login_x == 0) {  //ÏÔÊ¾µÇÂ½
         return ShowLogin();
     } else {
         int i = ShowRegist();   //ÏÔÊ¾×¢²á
         if(i > 0) {
             login_x = 0;
-            InitIndexMenu();
+            InitLoginMenu();
             return ShowLogin();
         }
     }

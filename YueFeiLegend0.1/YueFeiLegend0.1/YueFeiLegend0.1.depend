@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1504675625 source:g:\linuslan\coderepository\c\yuefeilegend0.1\yuefeilegend0.1\main.c
+1504699128 source:g:\linuslan\coderepository\c\yuefeilegend0.1\yuefeilegend0.1\main.c
 	<stdio.h>
 	<stdlib.h>
 	"Game.h"
@@ -7,7 +7,7 @@
 	"GameFrame.h"
 	"Login.h"
 
-1504674407 g:\linuslan\coderepository\c\yuefeilegend0.1\yuefeilegend0.1\game.h
+1504699048 g:\linuslan\coderepository\c\yuefeilegend0.1\yuefeilegend0.1\game.h
 	<stdio.h>
 	<stdlib.h>
 	<windows.h>
@@ -15,6 +15,7 @@
 	<ctype.h>
 	"GameLib.h"
 	"Constant.h"
+	"GameFrame.h"
 
 1504656083 source:e:\study\coderepository\c\yuefeilegend0.1\yuefeilegend0.1\main.c
 	<stdio.h>
@@ -45,7 +46,7 @@
 	<stdlib.h>
 	"GameLib.h"
 
-1504674407 source:g:\linuslan\coderepository\c\yuefeilegend0.1\yuefeilegend0.1\gamelib.c
+1504698343 source:g:\linuslan\coderepository\c\yuefeilegend0.1\yuefeilegend0.1\gamelib.c
 	<stdio.h>
 	<stdlib.h>
 	"GameLib.h"
@@ -54,7 +55,7 @@
 	<stdio.h>
 	<windows.h>
 
-1504675547 source:g:\linuslan\coderepository\c\yuefeilegend0.1\yuefeilegend0.1\game.c
+1504699493 source:g:\linuslan\coderepository\c\yuefeilegend0.1\yuefeilegend0.1\game.c
 	"Game.h"
 
 1504653422 e:\study\coderepository\c\yuefeilegend0.1\yuefeilegend0.1\constant.h
@@ -80,22 +81,21 @@
 
 1504674407 g:\linuslan\coderepository\c\yuefeilegend0.1\yuefeilegend0.1\constant.h
 
-1504674407 source:g:\linuslan\coderepository\c\yuefeilegend0.1\yuefeilegend0.1\gameframe.c
+1504697566 source:g:\linuslan\coderepository\c\yuefeilegend0.1\yuefeilegend0.1\gameframe.c
 	"GameFrame.h"
 
-1504674407 g:\linuslan\coderepository\c\yuefeilegend0.1\yuefeilegend0.1\gameframe.h
+1504698834 g:\linuslan\coderepository\c\yuefeilegend0.1\yuefeilegend0.1\gameframe.h
 	<stdio.h>
 	<stdlib.h>
 	"Constant.h"
 	"GameLib.h"
-	"Game.h"
 
-1504674978 g:\linuslan\coderepository\c\yuefeilegend0.1\yuefeilegend0.1\login.h
+1504697755 g:\linuslan\coderepository\c\yuefeilegend0.1\yuefeilegend0.1\login.h
 	<stdio.h>
 	"GameLib.h"
 	"Constant.h"
 	"Game.h"
 
-1504675399 source:g:\linuslan\coderepository\c\yuefeilegend0.1\yuefeilegend0.1\login.c
+1504698528 source:g:\linuslan\coderepository\c\yuefeilegend0.1\yuefeilegend0.1\login.c
 	"Login.h"
 

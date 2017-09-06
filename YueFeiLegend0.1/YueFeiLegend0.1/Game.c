@@ -3,10 +3,12 @@ int welcom_start_row = 0;
 int map_start_row = 0;
 int init_menu_start_row = 0;
 int init_info_start_row = 0;
+int menu_x = 0;
 extern Player* loginPlayer;
 extern int x;
 extern int y;
-
+extern initMenuStartRow;
+extern initMainFrameRow;
 /* 初始化玩家信息 */
 Player players[] = {
     {1, "赵飞云", .loginName="linuslan", "123456", .money=50000, .level=1, .maxExp=20, .exp=0, .maxHp=100, .hp=100, .maxMp=50, .mp=50, .minAttack=5, .maxAttack=10, .minDefence=5, .maxDefence=10,
@@ -157,19 +159,6 @@ void Init() {
     loginPlayer = &players[0];
 }
 
-void ShowWelcome() {
-    SetPosition(MARGIN_X, welcom_start_row);
-    printf(SEP);
-    SetPosition(MARGIN_X, ++welcom_start_row);
-    printf("|");
-    SetPosition(MARGIN_X+45, welcom_start_row);
-    printf("欢迎来到岳飞的世界");
-    SetPosition(MARGIN_X+OFFSET_X, welcom_start_row);
-    printf("|");
-    SetPosition(MARGIN_X, ++welcom_start_row);
-    printf(SEP);
-}
-
 void RefreshMap(int x, int y) {
     int map_y = map_start_row;
     int i, j;
@@ -209,22 +198,52 @@ void RefreshInfo() {
     printf(SEP);
 }
 
-void InitMenu() {
-    int menu_start_row = init_menu_start_row;
-    SetPosition(MARGIN_X, menu_start_row);
+char menus[][50] = {"查看人物", "观察周围", "回门派", "购买装备"};
+int size = sizeof(menus)/sizeof(menus[0]);
+void InitGameMenu() {
+    int menu_start_row = initMenuStartRow;
+    Clear(++menu_start_row, 2, OFFSET_X-1);
+    SetPosition(MARGIN_X+MIDDLE_OFFSET_X-3, menu_start_row);
     printf("游戏菜单");
-    SetPosition(MARGIN_X, ++menu_start_row);
-    printf("1、查看人物");
-    SetPosition(MARGIN_X, ++menu_start_row);
-    printf("2、观察周围");
-    SetPosition(MARGIN_X, ++menu_start_row);
-    printf("3、回总部");
-    SetPosition(MARGIN_X, ++menu_start_row);
-    printf("4、购买装备");
-    SetPosition(MARGIN_X, ++menu_start_row);
-    printf(CLEAR_SPACE);
-    SetPosition(MARGIN_X, menu_start_row);
-    printf("请选择或四周走动:");
+    SetPosition(MARGIN_X+MIDDLE_OFFSET_X-30, ++menu_start_row);
+    for(int i = 0; i < size; i ++) {
+        if(i == menu_x) {
+            SetSelectedColor();
+        }
+        printf("%d、%s", i+1, menus[i]);
+        ResetColor();
+        printf("     ");
+    }
+}
+
+void SelectGameMenu() {
+    int isSuccess = 0;
+    char key = 0;
+    while(1) {
+        key = getch();
+        if(key == 13) {
+            isSuccess = ProcessGameMenu();
+            if(isSuccess > 0) {
+                break;
+            }
+        } else {
+            if(key == VK_RIGHT || key == 77) {
+                menu_x ++;
+                if(menu_x >= size) {
+                    menu_x = 0;
+                }
+            } else if(key == VK_LEFT || key == 75) {
+                menu_x --;
+                if(menu_x < 0) {
+                    menu_x = size-1;
+                }
+            } else if(key != -32) {
+                printf("输入错误");
+                continue;
+            }
+        }
+        InitGameMenu();
+    }
 }
 
 void GetMapSize(int* x, int* y) {
@@ -232,14 +251,15 @@ void GetMapSize(int* x, int* y) {
     *x = sizeof(maps[0]) / sizeof(Map);
 }
 
-void ProcessMenu(char key) {
-    if(key == '1') {    //执行玩家属性展示
+int ProcessGameMenu() {
+    if(menu_x == 0) {    //执行玩家属性展示
         ShowPlayer();
-    } else if(key == '2') {
+    } else if(menu_x == 1) {
         WatchAround(x, y);
-    } else if(key == '4') {
+    } else if(menu_x == 2) {
         ShowStoreProps();
     }
+    return 0;
 }
 
 void ShowPlayer() {

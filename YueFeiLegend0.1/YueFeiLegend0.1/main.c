@@ -54,13 +54,14 @@ int main() {
     }*/
     SavePlayers();
     //ReadPlayer();
-    ShowWelcome2();
+    ShowWelcome();
     ShowMenu();
     InitMainFrame();
-    InitIndexMenu();
-    int login = ShowIndexMenu();
+    InitLoginMenu();
+    int login = ShowLoginMenu();
     if(login > 0) {
-
+        InitGameMenu();
+        SelectGameMenu();
     }
     return 0;
 }
