@@ -6,6 +6,7 @@
 #include "Login.h"
 int x = 0;
 int y = 0;
+Player* loginPlayer = NULL;
 int main() {
     /*int max_x = 0;
     int max_y = 0;

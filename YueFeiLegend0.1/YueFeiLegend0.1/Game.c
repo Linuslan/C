@@ -3,7 +3,7 @@ int welcom_start_row = 0;
 int map_start_row = 0;
 int init_menu_start_row = 0;
 int init_info_start_row = 0;
-Player* loginPlayer = NULL;
+extern Player* loginPlayer;
 extern int x;
 extern int y;
 

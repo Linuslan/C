@@ -4,7 +4,7 @@
 #include "Game.h"
 void InitIndexMenu();
 void ShowIndexMenu();
-void ProcessIndex();
-void ShowLogin();
-void ShowRegist();
-void Login(char name[], char password[]);
+int ProcessIndex();
+int ShowLogin();
+int ShowRegist();
+int Login(char name[], char password[]);
