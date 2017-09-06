@@ -12,6 +12,11 @@ void SetColor(int foreColor, int backColor) {
     SetConsoleTextAttribute(hwnd, foreColor+backColor*0x10);
 }
 
+void ResetColor() {
+    HWND hwnd = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(hwnd, 7+0*0x10);
+}
+
 void SetPosition(int x, int y) {
     HWND hwnd = GetStdHandle(STD_OUTPUT_HANDLE);
     COORD coord = {x, y};

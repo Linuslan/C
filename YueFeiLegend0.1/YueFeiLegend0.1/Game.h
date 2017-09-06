@@ -1,7 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <windows.h>
-
+#include <time.h>
+#include <ctype.h>
+#include "GameLib.h"
+#include "Constant.h"
+#ifndef GAME_H
+#define GAME_H
 typedef enum PropType{
     WEAPON, ARMOR, CARD
 } PropType;
@@ -44,6 +49,7 @@ typedef struct Bag {
 typedef struct Player{
     int id;
     char name[50];
+    char loginName[50];
     char password[50];
     int level;
     int maxExp;    //升级所需经验值
@@ -88,6 +94,7 @@ typedef struct Monster {
     int minMoney;   //最小金钱
     int maxMoney;   //最大金钱
 } Monster;
+#endif // GAME_H
 
 void Init();
 

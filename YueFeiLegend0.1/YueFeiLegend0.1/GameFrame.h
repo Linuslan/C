@@ -2,5 +2,7 @@
 #include <stdlib.h>
 #include "Constant.h"
 #include "GameLib.h"
+#include "Game.h"
 int ShowWelcome2();
-int ShowLogin();
+int ShowMenu();
+int InitMainFrame();

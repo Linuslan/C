@@ -1,8 +1,4 @@
-#include <time.h>
-#include <ctype.h>
 #include "Game.h"
-#include "GameLib.h"
-#include "Constant.h"
 int welcom_start_row = 0;
 int map_start_row = 0;
 int init_menu_start_row = 0;
@@ -13,7 +9,7 @@ extern int y;
 
 /* 初始化玩家信息 */
 Player players[] = {
-    {1, "赵飞云", "123456", .money=50000, .level=1, .maxExp=20, .exp=0, .maxHp=100, .hp=100, .maxMp=50, .mp=50, .minAttack=5, .maxAttack=10, .minDefence=5, .maxDefence=10,
+    {1, "赵飞云", .loginName="linuslan", "123456", .money=50000, .level=1, .maxExp=20, .exp=0, .maxHp=100, .hp=100, .maxMp=50, .mp=50, .minAttack=5, .maxAttack=10, .minDefence=5, .maxDefence=10,
      .weapon={1, "生锈的铁剑", WEAPON, 1, .minAttack=5, .maxAttack=10, .price=100, .desc="新手专用"},
      .armor={2, "破旧的护甲", ARMOR, 2, .minDefence=5, .maxDefence=10, .price=500, .desc="新手专供"},
      .martial={3, "岳家军"}, .coord={0, 0},
@@ -25,7 +21,7 @@ Player players[] = {
             }
         }
      }},
-    {2, "GM", "123456", .money=65535, .level=9999, .maxExp=65535, .exp=65535, .maxHp=65535, .maxMp=65535, .minAttack=65535, .maxAttack=65535, .minDefence=65535, .maxDefence=65535, .weapon={}, .armor={}, .martial={}, .coord={}, .bag={}}
+    {2, "GM", .loginName="GM", "123456", .money=65535, .level=9999, .maxExp=65535, .exp=65535, .maxHp=65535, .maxMp=65535, .minAttack=65535, .maxAttack=65535, .minDefence=65535, .maxDefence=65535, .weapon={}, .armor={}, .martial={}, .coord={}, .bag={}}
 };
 /* 初始化道具 */
 Prop props[] = {

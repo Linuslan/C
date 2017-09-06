@@ -1,10 +1,13 @@
 #include "GameFrame.h"
-int menuStartRow = 2;
-void Clear(int row, int count) {
+int initMenuStartRow = 2;
+int initMainFrameRow = 0;
+void Clear(int row, int count, int column) {
     int originalRow = row;
     for(int i = 0; i < count; i ++) {
-        SetPosition(MARGIN_X, row++);
-        printf(CLEAR_SPACE);
+        SetPosition(MARGIN_X+1, row++);
+        for(int j = 0; j < column; j ++) {
+            printf(" ");
+        }
     }
     SetPosition(MARGIN_X, originalRow);
 }
@@ -15,7 +18,7 @@ int ShowWelcome2() {
     printf(SEP);
     SetPosition(MARGIN_X, ++welcom_start_row);
     printf("|");
-    SetPosition(MARGIN_X+MIDDLE_OFFSET_X, welcom_start_row);
+    SetPosition(MARGIN_X+MIDDLE_OFFSET_X-5, welcom_start_row);
     printf("»¶Ó­À´µ½ÔÀ·ÉµÄÊÀ½ç");
     SetPosition(MARGIN_X+OFFSET_X, welcom_start_row);
     printf("|");
@@ -25,6 +28,7 @@ int ShowWelcome2() {
 }
 
 int ShowMenu() {
+    int menuStartRow = initMenuStartRow;
     SetPosition(MARGIN_X, ++menuStartRow);
     printf("|");
     SetPosition(MARGIN_X + OFFSET_X, menuStartRow);
@@ -35,19 +39,19 @@ int ShowMenu() {
     printf("|");
     SetPosition(MARGIN_X, ++menuStartRow);
     printf(SEP);
+    initMainFrameRow = menuStartRow;
     return menuStartRow;
 }
-Map menuMap[] = {
-    {.id=1, .name="µÇÂ¼", .coord={0, 0}},
-    {.id=2, .name="×¢²á", .coord={0, 1}
-};
-void InitLoginMenu() {
-    Clear(++menuStartRow, 2);
-    SetPosition(MARGIN_X+MIDDLE_OFFSET_X, menuStartRow);
-    printf("ÇëÑ¡Ôñ");
-    SetPosition(MARGIN_X+ROW_OFFSET_X, ++menuStartRow);
-    int size = sizeof(menuMap)/sizeof(Map);
-    for(int i = 0; i < size; i ++) {
 
+int InitMainFrame() {
+    int mainFrameRow = initMainFrameRow;
+    for(int i = 0; i < MAIN_FRAME_ROW; i ++) {
+        SetPosition(MARGIN_X, ++mainFrameRow);
+        printf("|");
+        SetPosition(MARGIN_X+OFFSET_X, mainFrameRow);
+        printf("|");
     }
+    SetPosition(MARGIN_X, ++mainFrameRow);
+    printf(SEP);
+    return mainFrameRow;
 }

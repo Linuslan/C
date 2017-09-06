@@ -3,6 +3,7 @@
 #include "Game.h"
 #include "GameLib.h"
 #include "GameFrame.h"
+#include "Login.h"
 int x = 0;
 int y = 0;
 int main() {
@@ -50,9 +51,12 @@ int main() {
             RefreshMap(x, y);
         }
     }*/
-    //SavePlayers();
+    SavePlayers();
     //ReadPlayer();
     ShowWelcome2();
     ShowMenu();
+    InitMainFrame();
+    InitIndexMenu();
+    ShowIndexMenu();
     return 0;
 }
