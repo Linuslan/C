@@ -12,6 +12,10 @@ typedef enum PropType{
     WEAPON, ARMOR, CARD
 } PropType;
 
+typedef enum MapType{
+    BUILDING, NPC
+} MapType;
+
 /* 道具结构 */
 typedef struct Prop{
     int id;
@@ -78,7 +82,14 @@ typedef struct Map {
     char fullName[50];  //详细名称
     COORD coord;    //地图所在坐标
     char desc[1000];    //地图描述
+    COORD endCoord; //结束坐标
+    MapType mapType;
 } Map;
+
+typedef struct List{
+    int size;
+    void** object;
+} List;
 
 typedef struct Monster {
     int id;
@@ -130,3 +141,5 @@ void StoreTrade(Player* player, Prop* prop, int offset, int row);
 void SavePlayers();
 
 void ReadPlayer();
+
+void EnterMap();

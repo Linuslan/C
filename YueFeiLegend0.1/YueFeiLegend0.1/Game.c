@@ -4,6 +4,8 @@ int map_start_row = 0;
 int init_menu_start_row = 0;
 int init_info_start_row = 0;
 int menu_x = 0;
+char* mapfile = "map.data";
+extern List* mapList;
 extern Player* loginPlayer;
 extern initMenuStartRow;
 extern initMainFrameRow;
@@ -163,15 +165,15 @@ void RefreshMap(int x, int y) {
     int size = sizeof(maps) / sizeof(maps[0]);
     int size2 = sizeof(maps[0]) / sizeof(Map);
     for(i = 0; i < size; i ++) {
-        SetPosition(MARGIN_X, ++map_y);
-        SetPosition(MARGIN_X+15, map_y);
+        SetPosition(MARGIN_X+ROW_OFFSET_X, ++map_y);
         for(j = 0; j < size2; j ++) {
             Map map = maps[i][j];
             if(x == j && y == i) {
                 SetSelectedColor();
             }
-            printf("%-9s", map.name);
+            printf("%-8s", map.name);
             ResetColor();
+            printf("   ");
         }
         SetPosition(MARGIN_X+OFFSET_X, map_y++);
     }
@@ -188,6 +190,8 @@ void Move() {
         key = getch();
         if(key == '0') {
             break;
+        } else if(key == 13){
+            EnterMap();
         } else {
             if(key == VK_UP || key == 72) {
                 y --;
@@ -614,5 +618,53 @@ void StoreTrade(Player* player, Prop* prop, int offset, int row) {
     player->bag.count ++;
     player->money -= prop->price;
     prop->stock --;
+}
+
+/* 初始化二级目录 */
+Map** InitSecondMap() {
+    Map** maps = NULL;
+    int x = loginPlayer->coord.X;
+    int y = loginPlayer->coord.Y;
+    FILE* file = fopen(mapfile, "rb");
+    Map* map = (Map*)malloc(sizeof(Map));
+    while(1<=fread(map, sizeof(Map), 1, file)) {
+        if(map->coord.X==x && map->coord.Y==y) {
+            break;
+        }
+    }
+    fclose(file);
+    file = NULL;
+    if(map->coord.X == x && map->coord.Y == y) {
+        char* secondMapFile = strcat((char)map->id, ".map");
+        file = fopen(secondMapFile, "rb");
+        int i = 0;
+        while(1<=fread(map, sizeof(Map), 1, file)) {
+            if(NULL == maps) {
+                maps = (Map**)malloc(sizeof(Map*));
+            } else {
+                Map** temp = realloc(maps, (++i)*sizeof(Map*));
+                maps = temp;
+            }
+            *(maps+i) = map;
+        }
+        mapList->object=maps;
+        mapList->size = i;
+    }
+}
+
+void RefreshMap2() {
+    int row = initMainFrameRow;
+    int size = mapList->size;
+    if(size < 1) {
+        return;
+    }
+    Clear(++row, MAIN_FRAME_ROW, OFFSET_X-1);
+    for(int i = 0; i < size; i ++) {
+
+    }
+}
+
+void EnterMap() {
+
 }
 

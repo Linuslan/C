@@ -4,9 +4,12 @@
 #include "GameLib.h"
 #include "GameFrame.h"
 #include "Login.h"
+#pragma comment(lib,"user32")
+#pragma comment(lib,"gdi32")
 int x = 0;
 int y = 0;
 Player* loginPlayer = NULL;
+List* mapList=NULL;
 int main() {
     /*int max_x = 0;
     int max_y = 0;
@@ -52,7 +55,7 @@ int main() {
             RefreshMap(x, y);
         }
     }*/
-    SavePlayers();
+    /*SavePlayers();
     //ReadPlayer();
     ShowWelcome();
     ShowMenu();
@@ -62,6 +65,22 @@ int main() {
     if(login > 0) {
         InitGameMenu();
         SelectGameMenu();
+    }*/
+    Map** maps = NULL;
+    for(int i = 0; i < 10; i ++) {
+        if(NULL == maps) {
+            maps = (Map**)malloc(sizeof(Map*));
+        } else {
+            Map** temp = realloc(maps, (i+1)*sizeof(Map*));
+            maps = temp;
+        }
+        Map* map = (Map*)malloc(sizeof(Map));
+        map->id = i;
+        *(maps+i) = map;
+    }
+    for(int i = 0; i < 10; i ++) {
+        Map* map = *(maps+i);
+        printf("%d", map->id);
     }
     return 0;
 }
