@@ -3,6 +3,7 @@
 #include <windows.h>
 #include <time.h>
 #include <ctype.h>
+#include <string.h>
 #include "GameLib.h"
 #include "Constant.h"
 #include "GameFrame.h"
@@ -71,6 +72,7 @@ typedef struct Player{
     Prop armor;
     Martial martial;    //归属门派
     COORD coord;    //玩家当前所在坐标
+    COORD secondCoord;  //二级地图的坐标
     Bag bag;
     int money;
 } Player;
@@ -142,4 +144,8 @@ void SavePlayers();
 
 void ReadPlayer();
 
-void EnterMap();
+void EnterSecondMap();
+void InitSecondMap();
+void RefreshSecondMap();
+void SaveSecondMap();
+void SaveMap();

@@ -92,6 +92,71 @@ Map maps[][8] = {
     }
 
 };
+
+/*测试用*/
+Map maps2[16] = {
+    {
+        .id=1, .name="麒麟村", .fullName="大名府内黄县麒麟村", .coord={0, 0}, .desc="岳飞儿时漂流至此"
+    },
+    {
+        .id=2, .name="内黄县", .fullName="大名府内黄县", .coord={1, 0}, .desc="大名府内黄县，岳飞所在县"
+    },
+    {
+        .id=3, .name="大名府", .fullName="大名府", .coord={2, 0}, .desc="大名府"
+    },
+    {
+        .id=4, .name="汤阴县", .fullName="相州汤阴县", .coord={3, 0}, .desc="相州汤阴县"
+    },
+    {
+        .id=5, .name="相州", .fullName="相州", .coord={4, 0}, .desc="相州"
+    },
+    {
+        .id=6, .name="沥泉山", .fullName="相州沥泉山", .coord={5, 0}, .desc=""
+    },
+    {
+        .id=7, .name="沥泉洞", .fullName="沥泉洞", .coord={6, 0}, .desc=""
+    },
+    {
+        .id=8, .name="乱草岗", .fullName="乱草岗", .coord={7, 0}, .desc=""
+    },
+    {
+        .id=1, .name="麒麟村1", .fullName="大名府内黄县麒麟村", .coord={0, 1}, .desc="岳飞儿时漂流至此"
+    },
+    {
+        .id=2, .name="内黄县2", .fullName="大名府内黄县", .coord={1, 1}, .desc="大名府内黄县，岳飞所在县"
+    },
+    {
+        .id=3, .name="大名府3", .fullName="大名府", .coord={2, 1}, .desc="大名府"
+    },
+    {
+        .id=4, .name="汤阴县4", .fullName="相州汤阴县", .coord={3, 1}, .desc="相州汤阴县"
+    },
+    {
+        .id=5, .name="相州5", .fullName="相州", .coord={4, 1}, .desc="相州"
+    },
+    {
+        .id=6, .name="沥泉山6", .fullName="相州沥泉山", .coord={5, 1}, .desc=""
+    },
+    {
+        .id=7, .name="沥泉洞7", .fullName="沥泉洞", .coord={6, 1}, .desc=""
+    },
+    {
+        .id=8, .name="乱草岗8", .fullName="乱草岗", .coord={7, 1}, .desc=""
+    }
+};
+
+Map secondMap1[10] = {
+    {
+        .id=1, .name="防具店", .fullName = "防具店", .coord={2, 2}, .endCoord={3, 3}
+    },
+    {
+        .id=2, .name="道具店", .fullName="道具店", .coord={4, 5}, .endCoord={5, 6}
+    },
+    {
+        .id=3, .name="杂货店", .fullName="杂货店", .coord={7, 9}, .endCoord={8, 10}
+    }
+};
+
 Martial martial[] = {
     {
         1, "少林", {0, 1}, "天下武功出少林"
@@ -152,6 +217,28 @@ void ReadPlayer() {
     }
 }
 
+void SaveMap() {
+    FILE* mapFile = NULL;
+    char* mapFileName = "map.data";
+    mapFile = fopen(mapFileName, "wb");
+    int size = sizeof(maps2)/sizeof(Map);
+    for(int i = 0; i < size; i ++) {
+        Map map = maps2[i];
+        fwrite(&map, sizeof(Map), 1, mapFile);
+    }
+}
+
+void SaveSecondMap() {
+    FILE* secondMapFile = NULL;
+    char* secondMapName = "1.map";
+    secondMapFile = fopen(secondMapName, "wb");
+    int size = sizeof(secondMap1) / sizeof(Map);
+    for(int i = 0; i < size; i ++) {
+        Map map = secondMap1[i];
+        fwrite(&map, sizeof(Map), 1, secondMapFile);
+    }
+}
+
 void Init() {
     map_start_row = 3;
     init_info_start_row = map_start_row + sizeof(maps) / sizeof(maps[0]) + 1;
@@ -191,7 +278,7 @@ void Move() {
         if(key == '0') {
             break;
         } else if(key == 13){
-            EnterMap();
+            EnterSecondMap();
         } else {
             if(key == VK_UP || key == 72) {
                 y --;
@@ -621,7 +708,7 @@ void StoreTrade(Player* player, Prop* prop, int offset, int row) {
 }
 
 /* 初始化二级目录 */
-Map** InitSecondMap() {
+void InitSecondMap() {
     Map** maps = NULL;
     int x = loginPlayer->coord.X;
     int y = loginPlayer->coord.Y;
@@ -634,10 +721,22 @@ Map** InitSecondMap() {
     }
     fclose(file);
     file = NULL;
+    if(NULL != mapList && mapList->size > 0) {
+        int size = mapList->size;
+        for(int i = 0; i < size; i ++) {
+            Map* map = mapList->object + i;
+            free(map);
+        }
+        free(mapList);
+    }
+    mapList = NULL;
+    mapList = (List*)malloc(sizeof(List));
     if(map->coord.X == x && map->coord.Y == y) {
-        char* secondMapFile = strcat((char)map->id, ".map");
-        file = fopen(secondMapFile, "rb");
+        char id[2] = {'0'+map->id, '\0'};
+        char* secondMapFile = strcat(id, ".map");
+        file = fopen("1.map", "rb");
         int i = 0;
+
         while(1<=fread(map, sizeof(Map), 1, file)) {
             if(NULL == maps) {
                 maps = (Map**)malloc(sizeof(Map*));
@@ -652,19 +751,41 @@ Map** InitSecondMap() {
     }
 }
 
-void RefreshMap2() {
+void RefreshSecondMap() {
     int row = initMainFrameRow;
     int size = mapList->size;
     if(size < 1) {
         return;
     }
     Clear(++row, MAIN_FRAME_ROW, OFFSET_X-1);
-    for(int i = 0; i < size; i ++) {
 
+    for(int i = 0; i < 15; i ++) {
+        SetPosition(MARGIN_X+ROW_OFFSET_X, row++);
+        for(int j = 0; j < 15; j ++) {
+            if(loginPlayer->secondCoord.X == j && loginPlayer->secondCoord.Y == i) {
+                SetSelectedColor();
+            }
+            for(int n = 0; n < size; n ++) {
+                Map* map = (Map*)(mapList->object+i);
+                if(j >= map->coord.X && j <= map->endCoord.X && i >= map->coord.Y && i <= map->endCoord.Y) {
+                    printf("%s", map->name);
+                } else {
+                    printf(" ");
+                }
+            }
+            ResetColor();
+        }
+    }
+    for(int i = 0; i < size; i ++) {
+        Map* map = mapList->object+i;
+
+        printf("%-9s", map->name);
+        ResetColor();
     }
 }
 
-void EnterMap() {
-
+void EnterSecondMap() {
+    InitSecondMap();
+    RefreshSecondMap();
 }
 

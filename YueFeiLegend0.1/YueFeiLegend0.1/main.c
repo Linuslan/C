@@ -55,18 +55,24 @@ int main() {
             RefreshMap(x, y);
         }
     }*/
-    /*SavePlayers();
-    //ReadPlayer();
     ShowWelcome();
     ShowMenu();
     InitMainFrame();
+    loginPlayer = (Player*)malloc(sizeof(Player));
+    loginPlayer->coord.X = 0;
+    loginPlayer->coord.Y = 0;
+    /*SavePlayers();
+    //ReadPlayer();
     InitLoginMenu();
     int login = ShowLoginMenu();
     if(login > 0) {
         InitGameMenu();
         SelectGameMenu();
     }*/
-    Map** maps = NULL;
+    InitSecondMap();
+    RefreshSecondMap();
+    //SaveMap();
+    /*Map** maps = NULL;
     for(int i = 0; i < 10; i ++) {
         if(NULL == maps) {
             maps = (Map**)malloc(sizeof(Map*));
@@ -81,6 +87,7 @@ int main() {
     for(int i = 0; i < 10; i ++) {
         Map* map = *(maps+i);
         printf("%d", map->id);
-    }
+    }*/
+    //SaveSecondMap();
     return 0;
 }
