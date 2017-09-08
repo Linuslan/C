@@ -55,9 +55,9 @@ int main() {
             RefreshMap(x, y);
         }
     }*/
-    ShowWelcome();
+    /*ShowWelcome();
     ShowMenu();
-    InitMainFrame();
+    InitMainFrame();*/
     loginPlayer = (Player*)malloc(sizeof(Player));
     loginPlayer->coord.X = 0;
     loginPlayer->coord.Y = 0;
@@ -69,7 +69,7 @@ int main() {
         InitGameMenu();
         SelectGameMenu();
     }*/
-    InitSecondMap();
+    /**/InitSecondMap();
     RefreshSecondMap();
     //SaveMap();
     /*Map** maps = NULL;

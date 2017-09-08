@@ -145,7 +145,7 @@ Map maps2[16] = {
     }
 };
 
-Map secondMap1[10] = {
+Map secondMap1[3] = {
     {
         .id=1, .name="·À¾ßµê", .fullName = "·À¾ßµê", .coord={2, 2}, .endCoord={3, 3}
     },
@@ -231,12 +231,14 @@ void SaveMap() {
 void SaveSecondMap() {
     FILE* secondMapFile = NULL;
     char* secondMapName = "1.map";
-    secondMapFile = fopen(secondMapName, "wb");
+    secondMapFile = fopen(secondMapName, "w");
     int size = sizeof(secondMap1) / sizeof(Map);
     for(int i = 0; i < size; i ++) {
         Map map = secondMap1[i];
+        //fputs(map.name, secondMapFile);
         fwrite(&map, sizeof(Map), 1, secondMapFile);
     }
+    //fclose(secondMapFile);
 }
 
 void Init() {
@@ -738,13 +740,15 @@ void InitSecondMap() {
         int i = 0;
 
         while(1<=fread(map, sizeof(Map), 1, file)) {
+            printf("%s", map->name);
+            i++;
             if(NULL == maps) {
                 maps = (Map**)malloc(sizeof(Map*));
             } else {
-                Map** temp = realloc(maps, (++i)*sizeof(Map*));
+                Map** temp = (Map**)realloc(maps, i*sizeof(Map*));
                 maps = temp;
             }
-            *(maps+i) = map;
+            *(maps+(i-1)) = map;
         }
         mapList->object=maps;
         mapList->size = i;
@@ -758,29 +762,24 @@ void RefreshSecondMap() {
         return;
     }
     Clear(++row, MAIN_FRAME_ROW, OFFSET_X-1);
-
-    for(int i = 0; i < 15; i ++) {
-        SetPosition(MARGIN_X+ROW_OFFSET_X, row++);
-        for(int j = 0; j < 15; j ++) {
-            if(loginPlayer->secondCoord.X == j && loginPlayer->secondCoord.Y == i) {
-                SetSelectedColor();
-            }
-            for(int n = 0; n < size; n ++) {
-                Map* map = (Map*)(mapList->object+i);
-                if(j >= map->coord.X && j <= map->endCoord.X && i >= map->coord.Y && i <= map->endCoord.Y) {
-                    printf("%s", map->name);
-                } else {
-                    printf(" ");
-                }
-            }
-            ResetColor();
-        }
-    }
+    Map** maps = mapList->object;
+    //draw building
     for(int i = 0; i < size; i ++) {
-        Map* map = mapList->object+i;
-
-        printf("%-9s", map->name);
-        ResetColor();
+        Map* map = *(maps+i);
+        printf("%s", map->name);
+        /*int start_x = map->coord.X;
+        int start_y = map->coord.Y;
+        int end_x = map->endCoord.X;
+        int end_y = map->endCoord.Y;
+        for(int j = start_x; j < end_x; j ++) {
+            SetPosition(MARGIN_X+j, row+start_y);
+            SetSelectedColor();
+            printf(" ");
+            for(int n = start_y; n < end_y; n ++) {
+                SetPosition(MARGIN_X+j, row+n);
+                printf(" ");
+            }
+        }*/
     }
 }
 
