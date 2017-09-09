@@ -145,15 +145,24 @@ Map maps2[16] = {
     }
 };
 
-Map secondMap1[3] = {
+Map secondMap1[6] = {
     {
-        .id=1, .name="防具店", .fullName = "防具店", .coord={2, 2}, .endCoord={3, 3}
+        .id=1, .name="防具店", .fullName = "防", .coord={2, 2}, .endCoord={8, 5}, .desc=""
     },
     {
-        .id=2, .name="道具店", .fullName="道具店", .coord={4, 5}, .endCoord={5, 6}
+        .id=2, .name="道具店", .fullName="道", .coord={12, 2}, .endCoord={18, 5}, .desc=""
     },
     {
-        .id=3, .name="杂货店", .fullName="杂货店", .coord={7, 9}, .endCoord={8, 10}
+        .id=3, .name="杂货店", .fullName="杂", .coord={22, 2}, .endCoord={28, 5}, .desc=""
+    },
+    {
+        .id=4, .name="武器店", .fullName="武", .coord={32, 2}, .endCoord={38, 5}, .desc=""
+    },
+    {
+        .id=5, .name="县衙", .fullName="衙", .coord={20, 8}, .endCoord={30, 12}, .desc=""
+    },
+    {
+        .id=6, .name="药店", .fullName="药", .coord={42, 2}, .endCoord={48, 5}, .desc=""
     }
 };
 
@@ -231,7 +240,7 @@ void SaveMap() {
 void SaveSecondMap() {
     FILE* secondMapFile = NULL;
     char* secondMapName = "1.map";
-    secondMapFile = fopen(secondMapName, "w");
+    secondMapFile = fopen(secondMapName, "wb");
     int size = sizeof(secondMap1) / sizeof(Map);
     for(int i = 0; i < size; i ++) {
         Map map = secondMap1[i];
@@ -740,7 +749,8 @@ void InitSecondMap() {
         int i = 0;
 
         while(1<=fread(map, sizeof(Map), 1, file)) {
-            printf("%s", map->name);
+            Map* newMap = (Map*)malloc(sizeof(Map));    //重新创建一块内存，如果用map，则只是同一块内存被修改不同的值，最后的值即为最后一个
+            memcpy(newMap, map, sizeof(Map));
             i++;
             if(NULL == maps) {
                 maps = (Map**)malloc(sizeof(Map*));
@@ -748,7 +758,8 @@ void InitSecondMap() {
                 Map** temp = (Map**)realloc(maps, i*sizeof(Map*));
                 maps = temp;
             }
-            *(maps+(i-1)) = map;
+            *(maps+(i-1)) = newMap;
+
         }
         mapList->object=maps;
         mapList->size = i;
@@ -766,11 +777,12 @@ void RefreshSecondMap() {
     //draw building
     for(int i = 0; i < size; i ++) {
         Map* map = *(maps+i);
-        printf("%s", map->name);
-        /*int start_x = map->coord.X;
+        int start_x = map->coord.X;
         int start_y = map->coord.Y;
         int end_x = map->endCoord.X;
         int end_y = map->endCoord.Y;
+        int middle_x = (int)(end_x-start_x)/2+start_x-1;
+        int middle_y = (int)(end_y-start_y)/2+start_y;
         for(int j = start_x; j < end_x; j ++) {
             SetPosition(MARGIN_X+j, row+start_y);
             SetSelectedColor();
@@ -779,7 +791,9 @@ void RefreshSecondMap() {
                 SetPosition(MARGIN_X+j, row+n);
                 printf(" ");
             }
-        }*/
+        }
+        SetPosition(MARGIN_X+middle_x, row+middle_y);
+        printf("%s", map->fullName);
     }
 }
 

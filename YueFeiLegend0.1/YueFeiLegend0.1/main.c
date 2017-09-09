@@ -55,9 +55,9 @@ int main() {
             RefreshMap(x, y);
         }
     }*/
-    /*ShowWelcome();
+    ShowWelcome();
     ShowMenu();
-    InitMainFrame();*/
+    InitMainFrame();
     loginPlayer = (Player*)malloc(sizeof(Player));
     loginPlayer->coord.X = 0;
     loginPlayer->coord.Y = 0;
@@ -88,6 +88,6 @@ int main() {
         Map* map = *(maps+i);
         printf("%d", map->id);
     }*/
-    //SaveSecondMap();
+    SaveSecondMap();
     return 0;
 }
