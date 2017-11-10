@@ -37,6 +37,7 @@
 			<Add library="kernel32" />
 			<Add library="comctl32" />
 		</Linker>
+		<Unit filename="../../../CplusplusWin/WindowsAPI/Chapter2/Practice2.1.cpp" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />
